@@ -7,14 +7,6 @@ import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { ProductsService } from '../productservice/products.service';
 import { Products } from '../products';
-/*
-interface Item {
-  name: string,
-  price: number,
-  description: string,
-};
-*/
-
 
 @Component({
   selector: 'app-store',
@@ -23,7 +15,6 @@ interface Item {
   templateUrl: './store.component.html',
   styleUrl: './store.component.css'
 })
-
 
 export class StoreComponent {
   
@@ -34,21 +25,16 @@ products$ = this._productsService
 .getProducts()
 .pipe(tap((values) => console.log(values))); //para debug
 
+async deleteProduct(id: string){
+  try {
+    await this._productsService.deleteProduct(id);
+  } catch (error) {  
+  }
+}
+
 updateProduct(product: Products){
   console.log(product);
   this._router.navigate(['/store/edit', product.id]);
-}
-
-  /*
-  item$: Observable<Item[]>;
-  firestore: Firestore = inject(Firestore);
-  
-  constructor() {
-    const itemCollection = collection(this.firestore, 'products');
-    this.item$ = collectionData(itemCollection) as Observable<Item[]>;
   }
-*/
-
-
-  
 }
+
