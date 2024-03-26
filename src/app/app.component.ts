@@ -1,14 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Observable } from 'rxjs/internal/Observable';
-
-/* To make sure db is connected
-interface Item {
-  name: string,
-};
-*/
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
@@ -17,17 +10,26 @@ interface Item {
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'u2e4';
-
-  /* To make sure db is connected
-
-  item$: Observable<Item[]>;
-  firestore: Firestore = inject(Firestore);
-
-  constructor() {
-    const itemCollection = collection(this.firestore, 'items');
-    this.item$ = collectionData(itemCollection) as Observable <Item[]>;
-  */
-  
+  //Suscripción al estado de autenticación del usuario cuando se inicializa el componente y actualiza una señal con info del usuario cada vez que cambia el estado de autenticación.
+  authService = inject(AuthService);
+  //Para gestionar la autenticación y autorización de usuarios.
+  ngOnInit(): void {
+    this.authService.user$.subscribe((user) => {
+      if(user) {
+        this.authService.currentUserSig.set({
+          email: user.email!,
+          username: user.displayName!,
+        });
+      } else {
+        this.authService.currentUserSig.set(null);
+      }
+      console.log(this.authService.currentUserSig());
+    });
+  }
+  logout(): void {
+    console.log('logout'); 
+  }
 }
+
