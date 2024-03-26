@@ -1,0 +1,23 @@
+<app-navbar></app-navbar>
+<div class="container">
+    <div>
+        <button type="button" routerLink="/product-form" class="btn btn-outline-success" style="margin-bottom: 10px;">Add Product</button>
+    </div>
+
+    <div class="card-container">
+        <div *ngFor="let product of products$ | async" class="card-wrapper">
+            <div class="card" style="width: 18rem; margin-top: 10px;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">$ {{ product.price }}</h6>
+                    <p class="card-text">{{ product.description }}</p>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-success" (click)="updateProduct(product)">Edit</button>
+                        
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
